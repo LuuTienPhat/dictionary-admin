@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+     <!-- header bar -->
+     <%- include('../../components/nav/navbar'); -%>
+
+     <!-- breadcrumbs -->
+     <%- include('../../components/nav/breadcrumbs'); -%>
+      
+      <div class="row">
+        <div class="col-12">
+          <div class="card border-0 shadow components-section">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                  <form action="<%=originalUrl%>/add" method="POST">
+                    <div class="row mb-4">
+                      <div class="col-6">
+                        <label for="word">Word</label>
+                        <input type="word" class="form-control ${nameValid }" name="word" id="word" placeholder="Enter word" />
+                        <errors name="word" class="invalid-feedback" />
+                      </div>
+                      <div class="col-6">
+                        <label for="pronunciation">Pronunciation</label>
+                        <input type="pronunciation" class="form-control ${pronunciationValid }" name="pronunciation" id="pronunciation" placeholder="Enter pronunciation" />
+                        <errors name="pronunciation" class="invalid-feedback" />
+                      </div>
+                    </div>
+                    <!-- <div class="row mb-4">
+                      <div class="col-6">
+                        <label for="unit">Đơn vị tính</label>
+                        <input type="unit" class="form-control" name="unit" id="unit" placeholder="Nhập đơn vị tính" />
+                      </div>
+                      <div class="col-6">
+                        <label for="price">Giá tiền</label>
+                        <input value="0" type="price" class="form-control ${priceValid }" name="price" id="price" aria-describedby="priceHelp" placeholder="50000" />
+                        <errors name="price" class="invalid-feedback" />
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="my-1 me-2" for="category">Loại sản phẩm</label>
+                      <select name="category.id" class="form-select ${categoryValid }" id="category" aria-describedby="catgoryHelp">
+                        <option value="">Chọn danh mục của sản phẩm</option>
+                        <options items="${categories}" itemLabel="name" itemValue="id" />
+                      </select>
+                      <errors name="category" class="invalid-feedback" />
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="textarea">Mô tả</label>
+                      <textarea class="form-control" placeholder="Nhập mô tả" id="textarea" rows="4" name="description"></textarea>
+                    </div>
+
+                    <div class="mb-4 d-flex overflow-auto pt-4" id="preview-images"></div>
+
+                    <div class="mb-4">
+                      <label for="formFile" class="form-label">Chọn file hình ảnh</label>
+                      <input class="form-control" type="file" id="images" name="images" accept="image/*" multiple="multiple" />
+                      <small class="form-text text-muted">Chỉ nhận file ảnh, kích thước tối đa 20MB</small>
+                    </div> -->
+
+                    <script>
+                      var previewImage = document.getElementById("preview-images");
+                      var imageUpload = document.getElementById("images");
+
+                      imageUpload.onchange = () => {
+                        updatePreviewImage(imageUpload.files);
+                      };
+
+                      const updatePreviewImage = (files) => {
+                        let imgElement = "";
+                        let index = 0;
+                        for (let file of files) {
+                          if (file) {
+                            imgElement += "<div class='position-relative mr-2 me-3' style='height: 150px; width: 150px;'>";
+                            imgElement += "<i class='bi bi-x-circle-fill position-absolute top-0 start-100 translate-middle text-danger h5' onclick='removeFileFromFileList(this)' data-id='" + index + "'></i>";
+                            imgElement += "<img src='" + URL.createObjectURL(file) + "' width='150' height='150'/></div>";
+                          }
+                          index++;
+                        }
+                        previewImage.innerHTML = imgElement;
+                      };
+
+                      const removeFileFromFileList = (e) => {
+                        let index = parseInt(e.dataset.id);
+                        const dt = new DataTransfer();
+                        const input = document.getElementById("images");
+                        const { files } = input;
+
+                        for (let i = 0; i < files.length; i++) {
+                          const file = files[i];
+                          if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+                        }
+
+                        input.files = dt.files; // Assign the updates list
+                        updatePreviewImage(input.files);
+                      };
+                    </script>
+                    <div class="">
+                      <button class="btn btn-primary my-0" type="submit">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+  </body>
+</html>

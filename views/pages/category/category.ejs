@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <!-- search -->
+      <%- include('../../components/nav/search'); -%>
+
+      <div class="card card-body border-0 shadow table-wrapper table-responsive overflow-hidden">
+        <table class="table table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th class="border-gray-200 rounded-start">#</th>
+              <th class="border-gray-200">Name</th>
+              <!-- <th class="border-gray-200">Hình ảnh</th> -->
+              <th class="border-gray-200">Description</th>
+              <!-- <th class="border-gray-200">Ngày thêm</th> -->
+              <th class="border-gray-200 rounded-end"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Item -->
+            <% categories.forEach(function(item){ %>
+            <tr>
+              <td>
+                <a href="<%=originalUrl%>/<%=item.id%>" class="fw-bold"><%=item.id%></a>
+              </td>
+              <td><span class="fw-normal"><%=item.name%></span></td>
+              <!-- <td><img src="${category.image}" width="100" height="100" alt="${category.name}" /></td> -->
+              <td><span class="fw-normal text-wrap"><%=item.description%></span></td>
+              <!-- <td>
+                  <span class="fw-normal text-wrap">
+                    <fmt:setLocale value="vi_VN" scope="session" />
+                    <fmt:formatDate value="${category.dateAdded}" pattern="dd/MM/yyyy" />
+                  </span>
+                </td> -->
+              <td class="text-center">
+                <div class="btn-group">
+                  <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon icon-xxs" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
+
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu py-0">
+                    <a class="dropdown-item rounded-top" href="<%=originalUrl%>/<%=item.id%>">
+                      <i class="bi bi-eye-fill dropdown-icon text-gray-400 me-2 icon-sm"></i>
+                      View</a
+                    >
+
+                    <a class="dropdown-item text-warning" href="<%=originalUrl%>/edit/<%=item.id%>">
+                      <i class="bi bi-pencil-square dropdown-icon me-2"></i>
+                      Edit
+                    </a>
+
+                    <a id="btnDelete" class="dropdown-item text-danger rounded-bottom" data-bs-toggle="modal" data-bs-target="#modal-warning" data-id="<%=item.id%>">
+                      <i class="bi bi-trash2-fill dropdown-icon me-2"></i>
+                      Delete
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <%- include('../../components/nav/pagination'); -%>
+      </div>
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+  </body>
+  <!-- Modal -->
+  <%- include('../../components/deleteModal', {modal}); -%>
+
+  <!-- Scripts -->
+  <%- include('../../components/footer/script'); -%>
+
+  <!-- Notyf -->
+  <%- include('../../components/footer/notyf'); -%>
+</html>

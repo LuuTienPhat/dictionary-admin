@@ -1,0 +1,60 @@
+<!-- Core -->
+<script src="/scripts/vendor/@popperjs/core/dist/umd/popper.min.js" ></script>
+<script src="/scripts/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Vendor JS -->
+<script src="/scripts/vendor/onscreen/dist/on-screen.umd.min.js"></script>
+
+<!-- Slider -->
+<script src="/scripts/vendor/nouislider/dist/nouislider.min.js"></script>
+
+<!-- Smooth scroll -->
+<script
+	src="/scripts/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+
+<!-- Charts -->
+<script src="/scripts/vendor/chartist/dist/chartist.min.js"></script>
+<script src="/scripts/vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+
+<!-- Datepicker -->
+<script src="/scripts/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+
+<!-- Sweet Alerts 2 -->
+<script src="/scripts/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+<!-- Notyf -->
+<script src="/scripts/vendor/notyf/notyf.min.js"></script>
+
+<!-- Simplebar -->
+<script src="/scripts/vendor/simplebar/dist/simplebar.min.js"></script>
+
+<!-- Github buttons -->
+<!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+<script src="/scripts/vendor/buttons-github/buttons.js"></script>
+
+<!-- Volt JS -->
+<script src="/scripts/volt.js"></script>
+
+<script type="text/javascript">
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(function () {
+	'use strict'
+
+	// Fetch all the forms we want to apply custom Bootstrap validation styles to
+	var forms = document.querySelectorAll('.needs-validation')
+
+	// Loop over them and prevent submission
+	Array.prototype.slice.call(forms)
+		.forEach(function (form) {
+		form.addEventListener('submit', function (event) {
+			if (!form.checkValidity()) {
+			event.preventDefault()
+			event.stopPropagation()
+			}
+
+			form.classList.add('was-validated')
+		}, false)
+		})
+	})()
+</script>
+

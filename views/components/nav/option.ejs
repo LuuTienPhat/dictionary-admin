@@ -1,0 +1,25 @@
+<td class="text-center">
+    <div class="btn-group">
+      <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <svg class="icon icon-xxs" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+        </svg>
+
+        <span class="visually-hidden">Toggle Dropdown</span>
+      </button>
+      <div class="dropdown-menu py-0">
+        <a class="dropdown-item rounded-top" href="<%=originalUrl%>/<%=item.id%>">
+          <i class="bi bi-eye-fill dropdown-icon text-gray-400 me-2 icon-sm"></i>
+          View
+        </a>
+        <a class="dropdown-item text-warning" href="<%=originalUrl%>/edit/<%=item.id%>">
+          <i class="bi bi-pencil-square dropdown-icon me-2"></i>
+          Modify
+        </a>
+        <a id="btnDelete" class="dropdown-item text-danger rounded-bottom" data-bs-toggle="modal" data-bs-target="#modal-warning" data-id="<%=item.id%>">
+          <i class="bi bi-trash2-fill dropdown-icon me-2"></i>
+          Delete
+        </a>
+      </div>
+    </div>
+  </td>

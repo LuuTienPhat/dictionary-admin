@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+
+    <!-- CKEDITOR -->
+    <script src="/scripts/vendor/ckeditor/ckeditor.js"></script>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card border-0 shadow components-section">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                  <form action="<%=originalUrl%>" method="POST">
+                    <div class="mb-4">
+                      <label for="email">Receiver</label>
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                          </svg>
+                        </span>
+                        <input class="form-control" type="email" name="email" placeholder="Enter email" id="email" aria-describedby="emailHelp" />
+                        <errors path="email" class="invalid-feedback"></errors>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="subject">Subject</label>
+                      <input type="text" name="subject" placeholder="Enter Subject" class="form-control ${subjectValid }" id="subject" />
+                      <errors path="subject" class="invalid-feedback"></errors>
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="body">Body</label>
+                      <textarea class="form-control ${bodyValid }" rows="6" name="body"></textarea>
+                      <errors path="body" class="invalid-feedback"></errors>
+                    </div>
+
+                    <div class="">
+                      <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
+                        Send
+                        <svg class="icon icon-xs ms-2" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <script>
+      CKEDITOR.replace("body", {
+        language: "vi",
+      });
+    </script>
+  </body>
+</html>

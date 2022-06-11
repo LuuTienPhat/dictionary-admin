@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card border-0 shadow">
+            <div class="card-body">
+              <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Order Information</h1>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <!-- <h3 class="fw-extrabold mb-0">${invoice.id }</h3> -->
+                  <ul>
+                    <li>
+                      <small>Date:</small>
+                      <span class="fw-bold">
+                        <%-moment(order.orderDate).format("DD/MM/yyyy")%>
+                      </span>
+                    </li>
+                    <li>
+                      <small>Time:</small>
+                      <span class="fw-bold">
+                        <%-moment(order.orderDate).format("HH:mm")%>
+                      </span>
+                    </li>
+                    <li>
+                      <small>Total Quantity:</small> 
+                      <span class="fw-bold text-secondary">
+                        <% var totalQuant = order.orderDetails.reduce((total, currentValue) => total + Number(currentValue.quantity), 0)%>
+                        <%= totalQuant %> 
+
+                      </span>
+                    </li>
+                    <li>
+                      <small>Total Money:</small>
+                      <span class="fw-bold text-success">
+                        <% var totalPrice = order.orderDetails.reduce((total, currentValue) => total + (Number(currentValue.quantity) * Number(currentValue.productPrice)), 0)%>
+                        <%= Money(totalPrice) %>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mt-lg-0 mt-4">
+          <div class="card border-0 shadow">
+            <div class="card-body">
+              <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Customer Information</h1>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <ul>
+                    <li>
+                      <small>Full name:</small> 
+                      <span class="fw-bold"><%=order.shipName%></span>
+                    </li>
+                    <li>
+                      <p class="text-truncate my-0">
+                        <small>Address:</small>
+                        <span class="ms-1 fw-bold text-info">
+                          <%=order.shipAddress%>
+                        </span>
+                      </p>
+                    </li>
+                    <li>
+                      <small>Phone:</small> 
+                      <span class="fw-bold text-danger"><%=order.shipPhone%></span>
+                    </li>
+                    <li>
+                      <small>Note:</small> 
+                      <span class="fw-bold text-gray-400"><%=order.shipNote%></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="mt-4" />
+      
+      <div class="row mt-4">
+        <div class="mb-2 d-flex justify-content-between w-100 flex-wrap">
+          <div class="mb-3 mb-lg-0">
+            <h1 class="h4">Product List</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-body border-0 shadow table-wrapper table-responsive overflow-hidden">
+        <!-- <jsp:useBean id="pagedListHolder" scope="request" type="org.springframework.beans.support.PagedListHolder" />
+        <c:url value="${pagedLink }" var="pagedLink">
+          <c:param name="p" value="~" />
+        </c:url> -->
+
+        <table class="table table-hover table-responsive" id="datatable">
+          <thead class="thead-dark">
+            <tr>
+              <th class="border-gray-200 rounded-start">No.</th>
+              <th class="border-gray-200">Id</th>
+              <th class="border-gray-200">Name</th>
+              <th class="border-gray-200">Category</th>
+              <!-- <th class="border-gray-200">Hình ảnh</th> -->
+              <th class="border-gray-200">Unit</th>
+              <!-- <th class="border-gray-200">Mô tả</th> -->
+
+              <!-- <th class="border-gray-200">Ngày thêm</th> -->
+
+              <th class="border-gray-200">Original Quant</th>
+              <th class="border-gray-200">Require Quant</th>
+              <th class="border-gray-200">Price</th>
+              <th class="border-gray-200">Total</th>
+              <!-- <th class="border-gray-200 rounded-end"></th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Item -->
+            <!-- <c:forEach items="${pagedListHolder.pageList}" var="invoiceDetail" varStatus="i"> -->
+            <% products.forEach(function(item){ %>
+            <tr>
+                <td><span class="fw-normal text-wrap"><%=products.indexOf(item) + 1%></span></td>
+                <td>
+                  <a href="<%=pagesPath.productPagePath%>/<%=item.id%>" class="fw-bold">
+                    <%=item.id%>
+                  </a>
+                </td>
+                <td><span class="fw-normal text-wrap"><%=item.name%></span></td>
+                <td><span class="fw-bold text-danger text-wrap"><%=item.category != null ? item.category.name : ""%></span></td>
+                <td><span class="fw-normal text-wrap"><%=item.unit%></span></td>
+                <td><span class="fw-normal text-wrap"><%=item.quantity%></span></td>
+                <td><span class="fw-bold text-wrap"><%=order.orderDetails[products.indexOf(item)].quantity%></span></td>
+                <td>
+                  <span class="fw-bold text-wrap">
+                    <%=Money(item.price)%>
+                  </span>
+                </td>
+                <td>
+                  <span class="fw-bold text-wrap">
+                    <%=Money(item.price * item.quantity)%>
+                  </span>
+                </td>
+                
+                <!-- <td class="text-center">
+                  <div class="btn-group">
+                    <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <svg class="icon icon-xxs" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                      </svg>
+
+                      <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu py-0">
+                      <a class="dropdown-item rounded-top" href="${applicationScope.productPage}/${product.id}">
+                        <i class="bi bi-eye-fill dropdown-icon text-gray-400 me-2 icon-sm"></i>
+                        Chi tiết
+                      </a>
+                      <a class="dropdown-item text-warning" href="${applicationScope.productPage}/edit/${product.id}">
+                        <i class="bi bi-pencil-square dropdown-icon me-2"></i>
+                        Chỉnh sửa
+                      </a>
+                      <a id="btnDelete" class="dropdown-item text-danger rounded-bottom" data-bs-toggle="modal" data-bs-target="#modal-warning" data-id="${product.id}">
+                        <i class="bi bi-trash2-fill dropdown-icon me-2"></i>
+                        Xoá
+                      </a>
+                    </div>
+                  </div>
+                </td> -->
+                
+              </tr>
+            <!-- </c:forEach> -->
+            <% }) %> 
+          </tbody>
+        </table>
+
+        <!-- <div>
+          <tg:adminPaging pagedListHolder="${pagedListHolder}" pagedLink="${pagedLink}" />
+        </div> -->
+      </div>
+
+      <footer class="bg-white rounded shadow py-3 px-4 mb-4 mt-4">
+        <div class="row d-flex align-items-center">
+          <div class="col-12 col-md-2 col-xl-2 mb-4 mb-md-0">
+            <h6 class="mb-0 text-center text-lg-start">Status</h6>
+            <!-- <p class="mb-0 text-center text-lg-start">© 2019-<span class="current-year"></span> <a class="text-primary fw-normal" href="https://themesberg.com" target="_blank">Themesberg</a></p> -->
+          </div>
+          <div class="col-12 col-md-10 col-xl-10 text-center text-lg-start">
+            <!-- List -->
+            <form action="<%=originalUrl%>/<%=order.id%>" method="post">
+              <ul class="list-inline list-group-flush list-group-borderless text-md-end mb-0">
+              	<li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%-order.state == -1 ? 'btn-danger' : '' %>" name="state" value="-1">Canceled</button>
+                </li>
+              
+                <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%-order.state == 0 ? 'btn-info' : '' %>" name="state" value="0">New</button>
+                </li>
+
+                <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%-order.state == 1 ? 'btn-secondary' : '' %>" name="state" value="1">Processing</button>
+                </li>
+                
+                <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%-order.state == 2 ? 'btn-success' : '' %>" name="state" value="2">Completed</button>
+                </li>
+                <!-- <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%-order.state == 3 ? 'btn-success' : '' %>" name="state" value="3">Đã hoàn thành</button>
+                </li> -->
+
+                <!--  <li class="list-inline-item px-0 px-sm-2">
+	                    <a href="https://themesberg.com/contact">Contact</a>
+	                </li> -->
+              </ul>
+            </form>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+  </body>
+</html>

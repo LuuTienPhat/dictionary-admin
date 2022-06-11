@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<!-- Primary Meta Tags -->
+<%- include('../../components/header/head'); -%>
+
+<!-- Favicon -->
+<%- include('../../components/header/favicon'); -%>
+
+<!-- Styles -->
+<%- include('../../components/header/styles'); -%>
+
+<style>
+  .box {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+
+<body>
+ <!-- Side Bar -->
+ <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content position-relative vh-100">
+      <!-- header bar -->
+    <%- include('../../components/nav/navbar'); -%>
+
+    <!-- breadcrumbs -->
+    <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card border-0 shadow box">
+            <div class="card-body">
+              <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Feedback Information</h1>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <h3 class="fw-extrabold mb-0"></h3>
+                  <ul>
+                    <li>
+                      <small>Id:</small>
+                      <span class="fw-bold">
+                        <%=feedback.id%> 
+                        <!-- <fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy" /> -->
+                      </span>
+                    </li>
+                    <li>
+                      <small>User Id:</small>
+                      <span class="fw-bold">
+                        <%=feedback.user.id%> 
+                        <!-- <fmt:formatDate value="${order.orderDate}" pattern="HH:mm:ss" /> -->
+                      </span>
+                    </li>
+                    <li><small>Email:</small> <span class="fw-bold text-secondary"><%=feedback.email%></span></li>
+                    <li>
+                      <small>Approved:</small>
+                      <span class="fw-bold <%=feedback.approved == 0 ? 'text-danger' : 'text-success'%> ">
+                        <%=feedback.approved == 0 ? 'false' : 'true'%> 
+                        <!-- <fmt:setLocale value="vi_VN" scope="session" />
+                        <fmt:formatNumber value="${order.getTotalPrice() }" type="currency" /> -->
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mt-lg-0 mt-4">
+          <div class="card border-0 shadow box">
+            <div class="card-body">
+              <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Feedback Content</h1>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                <span class="fw-normal text-wrap">
+                  <%=feedback.content%>
+                </span>
+                  <!-- <ul>
+                    <li>
+                      <small></small> 
+                      <span class="fw-bold"></span>
+                    </li>
+                    <li>
+                      <p class="text-truncate my-0">
+                        <small>Địa chỉ:</small>
+                        <span class="ms-1 fw-bold text-info">
+                          ${order.shipAddress }
+                        </span>
+                      </p>
+                    </li>
+                    <li><small>Số điện thoại:</small> <span class="fw-bold text-danger">${order.shipPhone }</span></li>
+                    <li><small>Ghi chú:</small> <span class="fw-bold text-gray-400">${order.shipNote }</span></li>
+                  </ul> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="mt-4" />
+
+      <footer class="bg-white rounded shadow py-3 px-4 mb-4 mt-4">
+        <div class="row d-flex align-items-center">
+          <div class="col-12 col-md-2 col-xl-2 mb-4 mb-md-0">
+            <h6 class="mb-0 text-center text-lg-start">Approve</h6>
+            <!-- <p class="mb-0 text-center text-lg-start">© 2019-<span class="current-year"></span> <a class="text-primary fw-normal" href="https://themesberg.com" target="_blank">Themesberg</a></p> -->
+          </div>
+          <div class="col-12 col-md-10 col-xl-10 text-center text-lg-start">
+            <!-- List -->
+            <form action="<%=originalUrl%> " method="post">
+              <ul class="list-inline list-group-flush list-group-borderless text-md-end mb-0">
+              	<li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%=feedback.approved == 0 ? 'btn-danger disabled' : 'text-danger' %>" name="approved" value="0">
+                    No
+                  </button>
+                </li>
+              
+                <!-- <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn ${order.state == 0 ? 'btn-info' : '' }" name="state" value="0">Đơn hàng mới đến</button>
+                </li>
+
+                <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn ${order.state == 1 ? 'btn-tertiary' : '' }" name="state" value="1">Khách hàng đã xác nhận</button>
+                </li>
+                <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn ${order.state == 2 ? 'btn-secondary' : '' }" name="state" value="2">Đang xử lý</button>
+                </li> -->
+                <li class="list-inline-item px-0 px-sm-2">
+                  <button class="btn <%=feedback.approved == 1 ? 'btn-success disabled' : 'text-success' %>" name="approved" value="1">Yes</button>
+                </li>
+
+                <!--  <li class="list-inline-item px-0 px-sm-2">
+	                    <a href="https://themesberg.com/contact">Contact</a>
+	                </li> -->
+              </ul>
+            </form>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footerBottom'); -%>
+    </main>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+  </body>
+</html>

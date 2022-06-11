@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <!-- <jsp:useBean id="pagedListHolder" scope="request" type="org.springframework.beans.support.PagedListHolder" />
+    <c:url value="${pagedLink }" var="pagedLink">
+      <c:param name="p" value="~" />
+    </c:url> -->
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <!-- search -->
+      <%- include('../../components/nav/search'); -%>
+
+      <div class="card card-body border-0 shadow table-wrapper table-responsive overflow-hidden">
+        <table class="table table-hover table-responsive" id="datatable">
+          <thead class="thead-dark">
+            <tr>
+              <th class="border-gray-200 rounded-start">#</th>
+              <th class="border-gray-200">Name</th>
+              <th class="border-gray-200">Quantity</th>
+              <th class="border-gray-200">Unit</th>
+              <th class="border-gray-200">Price</th>
+              <th class="border-gray-200">Category</th>
+              <th class="border-gray-200">Image</th>
+              <!-- <th class="border-gray-200">Mô tả</th> -->
+              <!-- <th class="border-gray-200">Loại</th> -->
+              <!-- <th class="border-gray-200">Ngày thêm</th> -->
+              <!-- <th class="border-gray-200">Hình ảnh</th> -->
+              <th class="border-gray-200 rounded-end"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Item -->
+            <% products.forEach(function(item){ %>
+            <tr>
+              <td>
+                <a href="<%=originalUrl%>/<%=item.id%>" class="fw-bold"><%=item.id%></a>
+              </td>
+              <td><span class="fw-normal text-wrap"><%=item.name%></span></td>
+              <td><span class="fw-bold text-wrap"><%=item.quantity%></span></td>
+              <td><span class="fw-normal text-wrap"><%=item.unit%></span></td>
+              <td><span class="fw-normal text-wrap"><%=item.price%></span></td>
+              <td><span class="fw-normal text-wrap"><%=item.category%></span></td>
+              <td><span class="fw-normal text-wrap"><%=item.image%></span></td>
+              <!-- <td>
+                  <span class="fw-bold text-wrap">
+                    <fmt:setLocale value="vi_VN" scope="session" />
+                    <fmt:formatNumber value="${product.price}" type="currency" />
+                  </span>
+                </td> -->
+
+              <!-- <td><span class="fw-normal text-wrap">${product.description}</span></td>
+                
+                <td><span class="fw-bold text-danger text-wrap">${product.category.name}</span></td> -->
+
+              <!-- <td>
+                  <span class="fw-normal text-wrap">
+                    <fmt:formatDate value="${product.dateAdded}" pattern="dd/MM/yyyy" />
+                  </span>
+                </td> -->
+
+              <!-- <td>
+                  <span class="fw-normal text-wrap">
+                    <img src="${!product.images.isEmpty() ? product.images.get(0).image : ''}" width="100" height="100" alt="${product.name}" />
+                  </span>
+                </td> -->
+              <!-- Option -->
+              <%- include('../../components/nav/option', {item}); -%>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <%- include('../../components/nav/pagination'); -%>
+
+        <!-- <div>
+          <tg:adminPaging pagedListHolder="${pagedListHolder}" pagedLink="${pagedLink}" />
+        </div> -->
+      </div>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+
+    <!-- Modal -->
+    <%- include('../../components/deleteModal', {modal}); -%>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+  </body>
+</html>

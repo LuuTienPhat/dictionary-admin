@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <!-- search2 -->
+      <%- include('../../components/nav/search2', {state}); -%>
+
+      <div class="card card-body shadow border-0 table-wrapper table-responsive overflow-hidden">
+        <!-- <div class="d-flex mb-3">
+                    <select class="form-select fmxw-200" aria-label="Message select example">
+                        <option selected="selected">Bulk Action</option>
+                        <option value="1">Send Email</option>
+                        <option value="2">Change Group</option>
+                        <option value="3">Delete User</option>
+                    </select>
+                    <button class="btn btn-sm px-3 btn-secondary ms-3">Apply</button>
+                </div> -->
+        <table class="table user-table table-hover align-items-center">
+          <thead class="thead-dark">
+            <tr>
+              <!-- <th class="border-bottom rounded-start">
+                                <div class="form-check dashboard-check"><input class="form-check-input" type="checkbox" value id="userCheck55">
+                                    <label class="form-check-label" for="userCheck55"></label>
+                                </div>
+                            </th> -->
+              <th class="border-bottom text-wrap rounded-start">#</th>
+              <th class="border-bottom text-wrap">Customer name</th>
+              <th class="border-bottom text-wrap">Date</th>
+              <th class="border-bottom text-wrap">Time</th>
+              <th class="border-bottom text-wrap">Address</th>
+              <th class="border-bottom text-wrap">Quantity</th>
+              <th class="border-bottom text-wrap">Total</th>
+              <th class="border-bottom text-wrap">Status</th>
+              <th class="border-bottom rounded-end"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(function(item){ %>
+            <tr>
+              <td>
+                <div class="d-block">
+                  <a href="<%=originalUrl%>/<%=item.id%>"> <span class="fw-bold"><%=item.id%></span></a>
+                </div>
+              </td>
+              <td>
+                <span class="fw-normal"><%=item.shipName%></span>
+              </td>
+              <td>
+                <span class="fw-normal d-flex align-items-center text-wrap">
+                    <%-moment(item.orderDate).format("DD/MM/yyyy")%>
+                </span>
+              </td>
+
+              <td>
+                <span class="fw-normal text-wrap">
+                    <%-moment(item.orderDate).format("HH:mm")%>
+                </span>
+              </td>
+
+              <td>
+                <span class="fw-normal text-wrap">
+                  <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                    <%=item.shipAddress%>
+                  </span>
+                </span>
+              </td>
+              <td>
+                <span class="fw-normal text-wrap">
+                  <% var totalQuant = item.orderDetails.reduce((total, currentValue) => total + Number(currentValue.quantity), 0)%>
+                  <%= totalQuant %> 
+                </span>
+              </td>
+              <td>
+                <span class="fw-normal">
+                  <% var totalPrice = item.orderDetails.reduce((total, currentValue) => total + (Number(currentValue.quantity) * Number(currentValue.productPrice)), 0)%>
+                  <%= Money(totalPrice) %>
+                </span>
+              </td>
+              <td>
+                <span class="fw-normal text-wrap">
+                  <% if (item.state == -1) { %>
+                  <span class="text-danger">Canceled</span>
+                  <% } else if (item.state == 0) {%>
+                  <span class="text-info">New</span>
+                  <% } else if (item.state == 1) { %>
+                  <span class="text-tertiary">Processing</span>
+                  <% } else { %>
+                  <span class="text-success">Completed</span>
+                  <% } %>
+                </span>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon icon-xs" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                    </svg>
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1">
+                    <!-- <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Reset Pass
+                                        </a> -->
+                    <a class="dropdown-item d-flex align-items-center" href="<%=originalUrl%>/<%=item.id%>">
+                      <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                      </svg>
+                      View
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <%- include('../../components/nav/pagination'); -%>
+      </div>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+
+    <script type="text/javascript">
+      const stateSelection = document.getElementById("state-selection");
+      stateSelection.addEventListener('change', () => {
+        console.log(stateSelection.value);
+        const url = "<%=originalUrl%>?state=" + stateSelection.value;
+        window.location.href = url;
+      })
+    </script>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+    
+  </body>
+</html>

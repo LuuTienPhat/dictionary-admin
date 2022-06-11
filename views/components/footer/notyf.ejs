@@ -1,0 +1,36 @@
+<script type="text/javascript">
+  try {
+    const notyfOptions = JSON.parse('<%-notyfOptions%>');
+
+    const NOTYF_SUCCESS = '<%-NotyfType.NOTYF_SUCCESS%>';
+    const NOTYF_WARNING = '<%-NotyfType.NOTYF_WARNING%>';
+    const NOTYF_DANGER = '<%-NotyfType.NOTYF_DANGER%>';
+
+    const notyf = new Notyf({
+      position: {
+        x: "right",
+        y: "top",
+      },
+      types: [
+        {
+          type: notyfOptions.type == NOTYF_SUCCESS ? "info" : notyfOptions.type == NOTYF_WARNING ? "warning" : "error",
+          background: notyfOptions.type == NOTYF_SUCCESS ? "#0ea271" : notyfOptions.type == NOTYF_WARNING ? "#F5B759" : "#FA5252",
+          icon: {
+            className: notyfOptions.type == NOTYF_SUCCESS ? "bi bi-check2-circle" : notyfOptions.type == NOTYF_WARNING ? "bi bi-exclamation-circle" : "bi bi-x-circle",
+            tagName: "span",
+            color: "#fff",
+          },
+          dismissible: true,
+          duration: 1000 * 5,
+        },
+      ],
+    });
+
+    notyf.open({
+      type: notyfOptions.type == NOTYF_SUCCESS ? "info" : notyfOptions.type == NOTYF_WARNING ? "warning" : "error",
+      message: notyfOptions.content,
+    });
+  } catch (error) {
+    
+  }
+</script>
