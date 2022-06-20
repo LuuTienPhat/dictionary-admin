@@ -1,0 +1,175 @@
+<div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-add" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="h5 modal-title">Meaning</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="POST" id="form-meaning">
+        <div class="row mb-4">
+         <div class="col-4 d-none">
+          <label for="meaningName">#</label>
+          <input type="text" class="form-control" name="vocabularyId" id="vocabularyId" value="<%=vocabulary.id%>"/> 
+         </div>
+         <div class="col-4 d-none">
+          <label for="meaningName">#</label>
+          <input type="text" class="form-control" name="parentPath" id="meaningId" value="<%=originalUrl%> "/>   
+         </div>
+         <div class="col-12">
+          <label for="productName">Part Of Speech</label>
+          <select class="form-select mb-0 ${partOfSpeechValid }" id="partOfSpeech-select" name="partOfSpeechId">
+            <option value="" >...</option>
+          </select>
+         </div>
+        </div>
+        
+        <!-- <div class="row mb-4">
+        <div class="col-6">
+          <label for="quantity">Danh mục</label>
+          <input value="" type="text" class="form-control" id="category" readonly="readonly"/> 
+         </div> 
+         <div class="col-6">
+          <label for="quantity">Số lượng tồn</label>
+          <input type="text" class="form-control" name="oldQuantity" id="oldQuantity" readonly="readonly" /> 
+         </div> 
+        </div>
+        <div class="row mb-4">
+         <div class="col-6">
+          <label for="quantity">${invoice.invoiceType.id == 1 ? 'Số lượng nhập' : 'Số lượng xuất'}</label>
+          <input type="text" class="form-control ${quantityValid }" name="newQuantity" id="newQuantity" placeholder="${invoice.invoiceType.id == 1 ? 'Nhập số lượng nhập' : 'Nhập số lượng xuất'}" /> 
+             <p class="invalid-feedback">${errors.get(product.id)}</p>
+         </div> -->
+         
+         <!-- <div class="col-6">
+          <label for="price">Đơn giá</label>
+          <input type="text" class="form-control ${priceValid }" id="price" name="price" placeholder="Nhập đơn giá" />
+             <p class="invalid-feedback">${errors.get(product.id)}</p>
+         </div>
+        </div> -->
+        
+        <div class="row mb-4">
+         
+         <div class="col-12">
+          <label for="price">Meaning</label>
+          <input type="text" class="form-control" id="meaning-detail" name="meaning" />
+         </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" id="btnConfirm">Submit</button>
+          <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Content -->
+<div class="modal fade" id="modal-warning-meaning" tabindex="-1" role="dialog" aria-labelledby="modal-warning" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="h5 modal-title">Confirm</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="mb-2">
+          <svg class="text-warning icon icon-xxl" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+
+        <h5 class="my-0 mb-2"><%-modal.content%></h5>
+        <small class="my-0 mt-4 text-wrap text-gray-500">This will <span class="fw-bold">be permanently removed</span> and <span class="fw-bold">can not be recovery</span></small>
+      </div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-danger" id="btnConfirmMeaning" href="">OK</a>
+        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Modal Content -->
+
+<script type="text/javascript">
+  let v1 = JSON.parse(`<%-v %>`);
+  const btnDeletes = document.querySelectorAll("#btnDeleteMeaning");
+  const originalUrl = '<%-originalUrl%>';
+
+  btnDeletes.forEach((btnDelete) => {
+    btnDelete.addEventListener("click", async () => {
+      let meaningId = btnDelete.dataset.id;
+      const btnConfirm = document.querySelector("#btnConfirmMeaning");
+      btnConfirm.href =  `/admin/api/meanings/delete/${v1.id}/${meaningId}`;
+      // await axios.delete(`/admin/api/meanings/${meaningId}`);
+    });
+  });
+</script>
+
+  <script type="text/javascript">
+    var meaningId = null;
+    var myModal = new bootstrap.Modal(document.getElementById('modal-add'), {
+        keyboard: false
+      });
+
+      var formMeaning = document.getElementById('form-meaning')
+
+      let partOfSpeeches = [];
+    window.addEventListener('load', async (event) => {
+       
+      await axios.get('/admin/api/partOfSpeeches')
+                    .then(res => res.data)
+                    .then(data => {
+                      partOfSpeeches = data;
+                    })
+                    .catch(err=>console.log(err))
+        
+        const btnEditMeanings = document.querySelectorAll("#btn-edit-meaning");
+        for(const button of btnEditMeanings) {
+            button.addEventListener('click',async (e) => {
+                meaningId = JSON.parse(button.dataset.id);
+
+                formMeaning.action = `/admin/api/meanings/edit/${meaningId}`;
+
+                let meaning = null;
+                await axios.get(`/admin/api/meanings/${meaningId}`)
+                    .then(res => res.data)
+                    .then(data => {
+                      meaning = data;
+                    })
+                    .catch(err=>console.log(err))
+
+                const selectEl = document.getElementById('partOfSpeech-select');
+                const options = partOfSpeeches.map(item => {
+                  return (
+                    `<option value="${item.id}" ${item.id == meaning.partOfSpeech.id ? 'selected' : ''}>${item.name}</option>`
+                  )
+                })
+                selectEl.innerHTML  = options.join('');
+                const meaningEl = document.getElementById('meaning-detail').value = meaning.meaning;
+                // const productIdEl = document.getElementById('meaningId').value = meaning.productId;
+                // const productNameEl = document.getElementById('productName').value = meaning.productName;
+                // const productOldQuantityEl = document.getElementById('oldQuantity').value = product.productOldQuantity;
+                // const productCategoryEl = document.getElementById('category').value = product.productCategory;
+                // const productNewQuantityEl = document.getElementById('newQuantity').value = product.productNewQuantity;
+                // const productPriceEl = document.getElementById('price').value = product.productPrice;
+                // const productTotalEl = document.getElementById('total').value = meaning.productTotal;
+                myModal.show();
+            }) 
+        }
+      });
+
+      const btnAddMeaning = document.querySelector("#btn-add-meaning");
+      btnAddMeaning.addEventListener('click', () => {
+        formMeaning.action = `/admin/api/meanings`;
+
+        const selectEl = document.getElementById('partOfSpeech-select');
+        const options = partOfSpeeches.map(item => {
+          return (
+            `<option value="${item.id}">${item.name}</option>`
+          )
+        })
+        selectEl.innerHTML  = options.join('');
+        myModal.show();
+      })
+    </script>

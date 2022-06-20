@@ -56,7 +56,7 @@
                     <li>
                       <small>Total Money:</small>
                       <span class="fw-bold text-success">
-                        <% var totalPrice = order.orderDetails.reduce((total, currentValue) => total + (Number(currentValue.quantity) * Number(currentValue.productPrice)), 0)%>
+                        <% var totalPrice = order.orderDetails.reduce((total, currentValue) => total + ((Number(currentValue.quantity) * Number(currentValue.productPrice))), 0)%>
                         <%= Money(totalPrice) %>
                       </span>
                     </li>

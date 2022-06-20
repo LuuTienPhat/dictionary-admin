@@ -72,6 +72,9 @@ exports.returnOrderDetailPage = async (req, res, next) => {
   const id = req.params.id;
   let order = null;
   let products = [];
+  let notyfOptions = null;
+  let notyfOptionsFlash = await req.consumeFlash("notyfOptions");
+  if (notyfOptionsFlash.length != 0) notyfOptions = notyfOptionsFlash[0];
 
   await axios
     .get(`${static.API_URL}${static.API_ORDER_PATH}/${id}`)
@@ -88,7 +91,7 @@ exports.returnOrderDetailPage = async (req, res, next) => {
         title: `Order ${order.id}`,
         breadcrumb: staticFunc.initBreadcrumbOptions("Orders",`Order ${order.id}`, true),
         order: order,
-        notyfOptions: null,
+        notyfOptions: notyfOptions,
         products: products,
         originalUrl: originalUrl,
         keyword: "",

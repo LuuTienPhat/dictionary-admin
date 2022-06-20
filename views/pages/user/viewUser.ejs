@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+
+    <style>
+      .box {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content position-relative vh-100">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="card border-0 shadow box">
+            <div class="card-body">
+              <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Category Information</h1>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <h3 class="fw-extrabold mb-0"></h3>
+                  <ul>
+                    <li>
+                      <small>Id:</small>
+                      <span class="fw-bold">
+                        <%=category.id%>
+                        <!-- <fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy" /> -->
+                      </span>
+                    </li>
+                    <li>
+                      <small>Name:</small>
+                      <span class="fw-bold">
+                        <%=category.name%>
+                        <!-- <fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy" /> -->
+                      </span>
+                    </li>
+                    <li>
+                      <small>Description:</small>
+                      <span class="fw-bold text-wrap">
+                        <%=category.description%>
+                        <!-- <fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy" /> -->
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-2 mt-lg-0 mt-4">
+          <div class="card border-0 shadow box">
+            <div class="card-body">
+              <!-- <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Feedback Content</h1>
+              </div> -->
+
+              <div class="row">
+                <div class="col-12 d-flex flex-column justify-content-center">
+                  <a href="<%=pagesPath.categoryPagePath%>/edit/<%=category.id%>" class="btn btn-block btn-gray-800 mb-3 d-inline-flex align-items-center justify-content-center">
+                    <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Edit
+                  </a>
+
+                  <!-- Button Delete -->
+                  <button id="btn-delete" data-id="<%=category.id%>" class="btn btn-block btn-danger mb-3 d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modal-warning">
+                    <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="mt-4" />
+
+
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footerBottom'); -%>
+    </main>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+  </body>
+</html>

@@ -1,36 +1,60 @@
 const { default: axios } = require("axios");
 const qs = require("qs");
 const static = require("../static");
-const staticFunction = require("../staticFunction");
+const staticFunc = require("../staticFunction");
 
-const originalUrl = `${static.PROFILE_DIR}${static.PROFILE_VIEW}`
+const originalUrl = `${static.PROFILE_DIR}${static.PROFILE_VIEW}`;
 
 exports.returnProfilePage = async (req, res, next) => {
+  const { userId } = req.cookies;
+  const id = userId;
+  let user = null;
+  let notyfOptionsFlash = await req.consumeFlash("notyfOptions");
+
+  await axios
+    .get(`${static.API_URL}${static.API_USER_PATH}/${id}`)
+    .then((res) => res.data)
+    .then(async (data) => {
+      user = data.data;
+
+      res.render(`${static.VIEWS_PAGE_DIR}${static.PROFILE_DIR}${static.PROFILE_VIEW}`, {
+        title: "Profile",
+        breadcrumb: staticFunc.initBreadcrumbOptions("Profile", user.id, true),
+        user: user,
+        type: "edit",
+        notyfOptions: notyfOptionsFlash.length != 0 ? notyfOptionsFlash[0] : null,
+        originalUrl: `${req.originalUrl}`,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.returnProfilePage1 = async (req, res, next) => {
   let profile = null;
   let userId = req.cookies.userId;
 
-  const { accessToken, refreshToken } = req.cookies
+  const { accessToken, refreshToken } = req.cookies;
 
   await axios
     .get(`${static.API_URL}/users/${userId}`, {
       headers: {
-        "Authorization" : `Bearer ${accessToken}`
-      }
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
     .then((res) => res.data)
     .then((data) => {
       console.log(data);
 
       // if (data.statusCode == 200) {
-        profile = data.data;
+      profile = data.data;
 
-        res.render(`${static.VIEWS_PAGE_DIR}${static.PROFILE_DIR}${static.PROFILE_VIEW}`, {
-          title: "Profile",
-          breadcrumb: staticFunction.initBreadcrumbOptions("Profile", "Your Information", false),
-          profile: profile,
-          originalUrl: originalUrl,
-          notyfOptions: null,
-        });
+      res.render(`${static.VIEWS_PAGE_DIR}${static.PROFILE_DIR}${static.PROFILE_VIEW}`, {
+        title: "Profile",
+        breadcrumb: staticFunction.initBreadcrumbOptions("Profile", "Your Information", false),
+        profile: profile,
+        originalUrl: originalUrl,
+        notyfOptions: null,
+      });
       // }
     })
     .catch((err) => console.log(err));

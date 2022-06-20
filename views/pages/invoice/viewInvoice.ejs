@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <div class="row justify-content-center mb-5">
+        <div class="col-12 col-xl-10">
+          <div class="card shadow border-0 p-4 p-md-5 position-relative">
+            <div class="d-flex justify-content-between pb-4 pb-md-5 mb-4 mb-md-5 border-bottom border-light">
+              <!-- <img class="image-md" src="fonts/light.svg" height="30" width="30" alt="Rocket Logo" /> -->
+              <span class="text-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-asterisk" viewBox="0 0 16 16">
+                  <path d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+                </svg>
+              </span>
+              <div>
+                <h4>ADMIN DICTIONARY .</h4>
+                <ul class="list-group simple-list">
+                  <!-- <li class="list-group-item fw-normal">
+                  7 Le Loi
+                </li>
+                <li class="list-group-item fw-normal">Quận 1, TPHCM</li> -->
+                  <li class="list-group-item fw-normal">
+                    <a class="fw-bold text-primary" href="#"> <span class="__cf_email__" data-cfemail="97f4f8fae7f6f9eed7e3fff2faf2e4f5f2e5f0b9f4f8fa">dictionary-admin@gmail.com</span></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="mb-6 d-flex align-items-center justify-content-center">
+              <h2 class="h1 mb-0">Invoice #<%=invoice.id %></h2>
+              <!-- <span class="badge badge-lg bg-success ms-4">Paid</span> -->
+            </div>
+            <div class="row justify-content-between mb-4 mb-md-5">
+              <!-- <div class="col-sm">
+              <h5>Thông tin người giao:</h5>
+              <div>
+                <ul class="list-group simple-list">
+                  <li class="list-group-item fw-normal">Henry M. Pike</li>
+                  <li class="list-group-item fw-normal">Themesberg LLC</li>
+                  <li class="list-group-item fw-normal">
+                    311 West Mechanic Lane Middletown, NY 10940
+                  </li>
+                  <li class="list-group-item fw-normal">
+                    <a class="fw-bold text-primary" href="#"><span class="__cf_email__"
+                        data-cfemail="9bf5faf6fedbf8f4f6ebfaf5e2b5f8f4f6">[email&#160;protected]</span></a>
+                  </li>
+                </ul>
+              </div>
+            </div> -->
+
+              <div class="col-sm col-lg-4">
+                <dl class="row text-sm-right">
+                  <dt class="col-6"><strong>Invoice No.</strong></dt>
+                  <dd class="col-6"><%=invoice.id %></dd>
+                  <dt class="col-6"><strong>Date:</strong></dt>
+                  <dd class="col-6">
+                    <!-- <fmt:setLocale value="vi_VN" scope="session" />
+                    <fmt:parseDate value="${invoice.date}" type="date" pattern="yyyy-MM-dd" var="parsedDate" />
+                    <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" /> -->
+
+                    <%=moment(invoice.createdDate).format('MMM DD, YYYY') %>
+                  </dd>
+                  <dt class="col-6"><strong>Time:</strong></dt>
+                  <dd class="col-6">
+                    <!-- <fmt:setLocale value="vi_VN" scope="session" />
+                    <fmt:parseDate value="${invoice.time}" type="date" pattern="HH:mm:ss" var="parsedTime" />
+                    <fmt:formatDate value="${parsedTime}" pattern="HH:mm:ss" /> -->
+                    <%=moment(invoice.createdDate).format('HH:mm:ss') %>
+                  </dd>
+
+                  <!-- <dt class="col-6"><strong>Date Due:</strong></dt>
+                <dd class="col-6">30/04/2020</dd> -->
+                </dl>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="table-responsive" style="">
+                  <table class="table mb-0 table-sm">
+                    <thead class="bg-light border-top">
+                      <tr>
+                        <th scope="row" class="border-0 text-right">No.</th>
+                        <th scope="row" class="border-0">#</th>
+                        <th scope="row" class="border-0">Name</th>
+                        <th scope="row" class="border-0 text-right">Unit</th>
+                        <th scope="row" class="border-0 text-right">Quantity</th>
+                        <th scope="row" class="border-0 text-right">Price</th>
+                        <!-- <th scope="row" class="border-0">%VAT</th> -->
+                        <th scope="row" class="border-0">Total Price</th>
+                        <!-- <th scope="row" class="border-0">Ghi chú</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% invoice.invoiceDetails.forEach(function(item, i){ %>
+                        <tr>
+                          <td><%=i%></td>
+                          <td scope="row" class="text-left fw-bold"><%=item.product.id %></td>
+
+                          <td class="text-wrap"><%=item.product.name %></td>
+                          <td><%=item.product.unit %></td>
+                          <td><%=item.quantity %></td>
+                          <td>
+                            <!-- <fmt:setLocale value="vi_VN" scope="session" />
+                            <fmt:formatNumber value="${invoiceDetail.price }" type="currency" /> -->
+                          
+                            <%= Money(item.price) %>
+                          </td>
+                          <!-- <td>1</td> -->
+                          <td>
+                            <!-- <fmt:setLocale value="vi_VN" scope="session" />
+                            <fmt:formatNumber value="${invoiceDetail.price * invoiceDetail.quantity }" type="currency" /> -->
+                            <%= Money(item.price * item.quantity) %>
+                          </td>
+                          <!-- <td></td> -->
+                        </tr>
+                      <% });%>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-end text-right mb-4 py-4">
+                  <div class="mt-4">
+                    <table class="table table-clear">
+                      <tbody>
+                        <!-- <tr>
+                        <td class="left"><strong>Subtotal</strong></td>
+                        <td class="right">$8.497,00</td>
+                      </tr> -->
+                        <!-- <tr>
+                        <td class="left"><strong>Discount (20%)</strong></td>
+                        <td class="right">$1,699,40</td>
+                      </tr> -->
+                        <!-- <tr>
+                        <td class="left"><strong>VAT (10%)</strong></td>
+                        <td class="right">$679,76</td>
+                      </tr> -->
+                        <tr>
+                          <td class="left"><strong>Total</strong></td>
+                          <td class="right">
+                            <strong>
+                              <!-- <fmt:setLocale value="vi_VN" scope="session" />
+                              <fmt:formatNumber value="${invoice.getTotalPrice() }" type="currency" /> -->
+                              <% var totalPrice = invoice.invoiceDetails.reduce((total, currentValue) => total + (Number(currentValue.quantity) * Number(currentValue.price)), 0)%>
+                              <%= Money(totalPrice) %>
+                            </strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- <h4>Payments to:</h4>
+              <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                  data-cfemail="f585948c98909b81b5839a9981db969a98">[email&#160;protected]</a></span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if(title == 'Invoice Preview' ){ %> 
+
+         <!-- Footer -->
+         <%- include('./pageNavigation'); -%>
+
+      <%} %> 
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+
+    <!-- Scripts -->
+  <%- include('../../components/footer/script'); -%>
+  </body>
+
+  <script type="text/javascript">
+    const btnDeletes = document.querySelectorAll("#btnDelete");
+
+    btnDeletes.forEach((btnDelete) => {
+      btnDelete.addEventListener("click", () => {
+        let categoryId = btnDelete.dataset.id;
+        const btnConfirm = document.querySelector("#btnConfirm");
+        btnConfirm.href = "<c:out value='${applicationScope.categoryPage}'/>/delete/" + categoryId;
+      });
+    });
+  </script>
+</html>

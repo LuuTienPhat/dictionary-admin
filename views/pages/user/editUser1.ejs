@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<!-- Primary Meta Tags -->
+<%- include('../../components/header/head'); -%>
+
+<!-- Favicon -->
+<%- include('../../components/header/favicon'); -%>
+
+<!-- Styles -->
+<%- include('../../components/header/styles'); -%>
+</head>
+
+<body>
+ <!-- Side Bar -->
+ <%- include('../../components/nav/sidebar'); -%>
+
+        <main class="content position-relative vh-100">
+			<!-- header bar -->
+            <%- include('../../components/nav/navbar'); -%>
+
+            <!-- breadcrumbs -->
+            <%- include('../../components/nav/breadcrumbs'); -%>
+            
+            <div class="row">
+                <div class="col-12 col-xl-12">
+                    <div class="card card-body border-0 shadow">
+                        <h2 class="h5 mb-4"><%=breadcrumb.parent%> Information</h2>
+                        <form action ="<%=originalUrl%>" method = "POST" class="needs-validation" novalidate>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div>
+                                        <label for="id">#</label>
+                                        <input class="form-control" id="id" name = "id" type="text" value="<%=user.id%>" readonly="true" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <label for="name">Name</label>
+                                        <div class="input-group">
+                                        	<input name="name" class="form-control" id="name" type="text" value = "<%=user.name%>" />
+                                    	</div>	
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                          </div>
+                                          <div class="invalid-feedback">
+                                            Please provide a name.
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div>
+                                        <label for="description">Description</label>
+                                        <div class="input-group">
+                                            <textarea id="description" name="description" class="form-control" rows="4"><%=user.phone%></textarea>
+                                        </div>	
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            <div class="mt-4">
+                                <button class="btn btn-gray-800 mt-2 animate-up-2 d-inline-flex align-items-center" type="submit">
+                                	<svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                	Save
+                                </button>
+                            </div>
+                            
+                    </div>
+                </div>
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+		<!-- Footer -->
+        <%- include('../../components/footer/footerBottom'); -%>
+        </main>
+        
+<!-- Scripts -->
+<%- include('../../components/footer/script'); -%>
+
+<!-- Notyf -->
+<%- include('../../components/footer/notyf'); -%>
+
+<script>
+    (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+    
+</body>
+
+</html>

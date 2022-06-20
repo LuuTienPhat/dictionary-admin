@@ -94,10 +94,39 @@ exports.returnVocabularyDetailPage = async (req, res, next) => {
 };
 
 exports.returnEditVocabularyPage = async (req, res, next) => {
-  res.render(`${static.VIEWS_PAGE_DIR}${static.VOCABULARY_DIR}${static.EDIT_VOCABULARY_VIEW}`, {
-    title: "Vocabulary Management",
-    breadcrumb: "Edit ",
-  });
+  const id = req.params.id;
+  let vocabulary = null;
+  // let partOfSpeeches = [];
+  let notyfOptionsFlash = await req.consumeFlash('notyfOptions');
+
+  // await axios
+  //   .get(`${static.API_URL}${static.apiPartOfSpeechPath}`)
+  //   .then((res) => res.data)
+  //   .then((data) => {
+  //     console.log(data);
+  //     if (data.statusCode == 200) {
+  //       partOfSpeeches = data.data;
+  //     }
+  //   })
+  //   .catch((err) => console.log(err));
+
+  await axios
+    .get(`${static.API_URL}${static.API_VOCABULARY_PATH}/${id}`)
+    .then((res) => res.data)
+    .then((data) => {
+      vocabulary = data.data;
+
+      res.render(`${static.VIEWS_PAGE_DIR}${static.VOCABULARY_DIR}${static.EDIT_VOCABULARY_VIEW}`, {
+        title: vocabulary.word,
+        breadcrumb: staticFunc.initBreadcrumbOptions("Vocabularies", vocabulary.word, true),
+        vocabulary: vocabulary,
+        v: JSON.stringify(vocabulary),
+        notyfOptions: notyfOptionsFlash.length == 0 ? null : notyfOptionsFlash[0],
+        originalUrl: `${req.originalUrl}`,
+        modal: {content: static.DELETE_VOCABULARY_QUESTION}
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.addVocabulary = async (req, res, next) => {
@@ -125,13 +154,13 @@ exports.addVocabulary = async (req, res, next) => {
 
 exports.updateVocabulary = async (req, res, next) => {
   const { id } = req.params;
-  const { name, description } = req.body;
+  const { word, pronunciation } = req.body;
   let notyfOptions = null;
 
   await axios
     .put(`${static.API_URL}${static.API_VOCABULARY_PATH}/${id}`, {
-      name: name,
-      description: description
+      word: word,
+      pronunciation: pronunciation
     })
     .then((res) => res.data)
     .then(async (data) => {
@@ -143,7 +172,7 @@ exports.updateVocabulary = async (req, res, next) => {
       }
 
       await req.flash('notyfOptions', notyfOptions);
-      res.redirect(originalUrl);
+      res.redirect(`${req.originalUrl}`);
     })
     .catch((err) => console.log(err));
 };

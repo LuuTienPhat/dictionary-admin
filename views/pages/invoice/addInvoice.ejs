@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <%- include('../../components/header/head'); -%>
+
+    <!-- Favicon -->
+    <%- include('../../components/header/favicon'); -%>
+
+    <!-- Styles -->
+    <%- include('../../components/header/styles'); -%>
+  </head>
+
+  <body>
+    <!-- Side Bar -->
+    <%- include('../../components/nav/sidebar'); -%>
+
+    <main class="content">
+      <!-- header bar -->
+      <%- include('../../components/nav/navbar'); -%>
+      <!-- breadcrumbs -->
+      <%- include('../../components/nav/breadcrumbs'); -%>
+
+      <form action="<%=originalUrl%>/add" method="POST">
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card border-0 shadow components-section">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-12 col-sm-12">
+                    <div class="row mb-4">
+                      <div class="col-12">
+                        <label for="quantity">#</label>
+                        <input type="text" class="form-control ${idValid }" name="id" id="id" placeholder="Enter invoice id" value="<%=invoiceId%>" />
+                        <errors name="id" class="invalid-feedback" />
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-12">
+                        <label class="" for="invoice">Type</label>
+                        <select name="invoiceTypeId" class="form-select ${invoiceTypeValid }" id="invoice-type">
+                          <option value="0">Choose invoice type</option>
+                          <% invoiceTypes.forEach(function(item){ %>
+                          <option value="<%=item.id%>"><%=item.name%></option>
+                          <% }) %>
+                          <!-- <options items="${invoiceTypes}" itemLabel="name" itemValue="id"/> -->
+                        </select>
+                        <errors name="invoiceType.id" class="invalid-feedback" />
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-6">
+                        <label for="productName">Date</label>
+                        <input type="text" class="form-control ${dateValid }" name="date" id="date" placeholder="Enter date" data-input="data-input" />
+                        <errors name="date" class="invalid-feedback" />
+                      </div>
+                      <div class="col-6">
+                        <label for="quantity">Time</label>
+                        <input type="text" class="form-control ${timeValid }" name="time" id="time" placeholder="Enter time" data-input="data-input" />
+                        <errors name="time" class="invalid-feedback" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <%- include('./pageNavigation'); -%>
+      </form>
+
+      <!-- Footer -->
+      <%- include('../../components/footer/footer'); -%>
+    </main>
+
+    <!-- Scripts -->
+    <%- include('../../components/footer/script'); -%>
+
+    <!-- Notyf -->
+    <%- include('../../components/footer/notyf'); -%>
+  </body>
+
+  <script type="text/javascript">
+    const datePicker = flatpickr("#date", {
+      locale: "vn",
+      allowInput: true,
+      enableTime: false,
+      firstDayOfWeek: 1,
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d/m/Y",
+    });
+
+    const timePicker = flatpickr("#time", {
+      locale: "vn",
+      allowInput: true,
+      noCalendar: true,
+      enableTime: true,
+      altInput: true,
+      altFormat: "H:i:S",
+      dateFormat: "H:i:S",
+      time_24hr: true,
+      enableSeconds: true,
+    });
+  </script>
+</html>

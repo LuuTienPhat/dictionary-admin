@@ -1,10 +1,18 @@
 const staticFunc = require('../staticFunction');
+const static = require('../static');
+const axios = require('axios');
 
-exports.render = (req, res, next) => {
+exports.render = async (req, res, next) => {
     const { accessToken } = req.cookies;
   
-    const roles = staticFunc.decodeJWT(accessToken).roles;
+    const decode = staticFunc.decodeJWT(accessToken);
+
+    const roles = decode.roles;
+    const userId = decode.sub;
   
+    let latestOrders = [];
+    let controller = null;
+
     let menu = [];
     if (roles.includes("ROLE_ADMIN_WORD")) {
       menu.push("vocabulary");
@@ -26,6 +34,29 @@ exports.render = (req, res, next) => {
     }
   
     res.locals.sidebar = menu;
-  
+    
+    await axios
+    .get(`${static.API_URL}${static.API_ORDER_PATH}/latest`)
+    .then((res) => res.data)
+    .then(async (data) => {
+      if (data.statusCode == 200) {
+        latestOrders = data.data;
+      }
+    })
+    .catch((err) => console.log(err));
+
+    await axios
+    .get(`${static.API_URL}${static.API_USER_PATH}/${userId}`)
+    .then((res) => res.data)
+    .then(async (data) => {
+      if (data.statusCode == 200) {
+        controller = data.data;
+      }
+    })
+    .catch((err) => console.log(err));
+
+    res.locals.latestOrders = latestOrders;
+    res.locals.controller = controller;
+
     next()
   };

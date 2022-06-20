@@ -40,7 +40,7 @@
               <th class="border-gray-200">Unit</th>
               <th class="border-gray-200">Price</th>
               <th class="border-gray-200">Category</th>
-              <th class="border-gray-200">Image</th>
+              <th class="border-gray-200">Description</th>
               <!-- <th class="border-gray-200">Mô tả</th> -->
               <!-- <th class="border-gray-200">Loại</th> -->
               <!-- <th class="border-gray-200">Ngày thêm</th> -->
@@ -59,8 +59,8 @@
               <td><span class="fw-bold text-wrap"><%=item.quantity%></span></td>
               <td><span class="fw-normal text-wrap"><%=item.unit%></span></td>
               <td><span class="fw-normal text-wrap"><%=item.price%></span></td>
-              <td><span class="fw-normal text-wrap"><%=item.category%></span></td>
-              <td><span class="fw-normal text-wrap"><%=item.image%></span></td>
+              <td><span class="fw-normal text-wrap"><%=item.category.name%></span></td>
+              <td><span class="fw-normal text-wrap"><%=item.description%></span></td>
               <!-- <td>
                   <span class="fw-bold text-wrap">
                     <fmt:setLocale value="vi_VN" scope="session" />

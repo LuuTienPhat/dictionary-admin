@@ -1,13 +1,16 @@
 const { default: axios } = require("axios");
 const qs = require("qs");
-const { API_URL: apiURL, apiLoginPath, apiUsersPath} = require("../static");
+const { API_URL: apiURL, apiLoginPath, API_USER_PATH: apiUsersPath } = require("../static");
 const { checkAuthentication, checkAuthorization } = require("../middlewares/auth.middleware");
-const static = require('../static');
+const static = require("../static");
 const staticFunc = require("../staticFunction");
 
-exports.returnSignInPage = (req, res, next) => {
+exports.returnSignInPage = async (req, res, next) => {
+  let notyfOptions = await req.consumeFlash('notyfOptions');
+
   res.render("pages/sign-in", {
     title: "Sign In",
+    notyfOptions: notyfOptions[0]
   });
 };
 
@@ -50,19 +53,36 @@ exports.login = async (req, res, next) => {
     )
     .then((res) => res.data)
     .then(async (data) => {
-      console.log(data);
-      refreshToken = data.refresh_token;
-      accessToken = data.access_token;
-      
-      let userId = staticFunc.decodeJWT(accessToken).sub;
+          refreshToken = data.refresh_token;
+          accessToken = data.access_token;
+  
+          let decodedToken = staticFunc.decodeJWT(accessToken);
+          let userId = decodedToken.sub;
+          let roles = decodedToken.roles;
 
-      res.cookie('accessToken', accessToken, { maxAge: 1000 * 60 * 30, httpOnly: true });
-      res.cookie('refreshToken', accessToken, { maxAge: 1000 * 60 * 30, httpOnly: true });
-      res.cookie('userId', userId, { maxAge: 1000 * 60 * 30, httpOnly: true });
-     
-      res.redirect("/admin/dashboard");
+          if(roles.includes("ROLE_CUSTOMER")) {
+            let notyfOptions = staticFunc.initNotyfOptions(static.NOTYF_DANGER, "The username or password are incorrect");
+            await req.flash("notyfOptions", notyfOptions);
+            return res.redirect("/admin/login");
+          }
+          else {
+            let maxAge = 1000 * 60 * 60 * 24;
+            let cookieOption = { maxAge: maxAge, httpOnly: true }
+    
+            res.cookie("accessToken", accessToken, cookieOption);
+            res.cookie("refreshToken", accessToken, cookieOption);
+            res.cookie("userId", userId, cookieOption);
+    
+            return res.redirect("/admin/dashboard"); 
+          }
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+
+      let notyfOptions = staticFunc.initNotyfOptions(static.NOTYF_DANGER, "The username or password are incorrect");
+      await req.flash("notyfOptions", notyfOptions);
+      return res.redirect("/admin/login");
+
+    });
 };
 
 exports.logOut = (req, res, next) => {

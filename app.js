@@ -10,9 +10,11 @@ var sanitizeHtml = require("sanitize-html");
 const { flash } = require("express-flash-message");
 var session = require("express-session");
 var moment = require("moment");
+// var multer = require('multer');
 
 const app = express();
 const static = require("./static");
+// var upload = multer();
 
 const publicDir = path.join(__dirname, "public");
 const viewsDir = path.join(__dirname, "views");
@@ -31,10 +33,15 @@ const profileRouter = require("./routes/profile.route");
 const categoryRouter = require("./routes/category.route");
 const productRouter = require("./routes/product.route");
 const orderRouter = require("./routes/order.route");
+const userRouter = require("./routes/user.route");
+const invoiceRouter = require("./routes/invoice.route");
+const apiRouter = require("./routes/api.route");
+
 const auth = require("./middlewares/auth.middleware");
 const sidebar = require("./middlewares/sidebar.middleware");
 const staticFunc = require("./staticFunction");
 const { logOut } = require("./controllers/account.controller");
+const { default: axios } = require("axios");
 
 // view engine setup
 app.set("views", viewsDir);
@@ -47,7 +54,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.set("port", process.env.PORT || 8000);
 app.use(cors());
-app.use(helmet());
+// app.use(upload.array()); 
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 app.use(
   session({
     secret: "secret",
@@ -70,6 +80,9 @@ const absoluteProfilePath = `${static.ADMIN_PATH}${static.PROFILE_PATH}`;
 const absoluteCategoryPath = `${static.ADMIN_PATH}${static.CATEGORY_PATH}`;
 const absoluteProductPath = `${static.ADMIN_PATH}${static.PRODUCT_PATH}`;
 const absoluteOrderPath = `${static.ADMIN_PATH}${static.ORDER_PATH}`;
+const absoluteUserPath = `${static.ADMIN_PATH}${static.USER_PATH}`;
+const absoluteInvoicePath = `${static.ADMIN_PATH}${static.INVOICE_PATH}`;
+const absoluteAPIPath = `${static.ADMIN_PATH}${static.API}`;
 
 app.locals.pagesPath = {
   dashboardPagePath: absoluteDashboardPath,
@@ -81,6 +94,9 @@ app.locals.pagesPath = {
   categoryPagePath: absoluteCategoryPath,
   productPagePath: absoluteProductPath,
   orderPagePath: absoluteOrderPath,
+  userPagePath: absoluteUserPath,
+  invoicePagePath: absoluteInvoicePath,
+  apiPath: absoluteAPIPath,
   settingsPagePath: "",
 };
 
@@ -105,12 +121,16 @@ app.use(absoluteProfilePath, auth.checkAuthentication, sidebar.render,profileRou
 app.use(absoluteCategoryPath, auth.checkAuthentication, sidebar.render,categoryRouter);
 app.use(absoluteProductPath, auth.checkAuthentication, sidebar.render,productRouter);
 app.use(absoluteOrderPath, auth.checkAuthentication, sidebar.render, orderRouter);
-app.get(`${static.ADMIN_PATH}/logout`, auth.checkAuthentication ,logOut)
+app.use(absoluteUserPath, auth.checkAuthentication, sidebar.render, userRouter);
+app.use(absoluteInvoicePath, auth.checkAuthentication, sidebar.render, invoiceRouter);
+app.use(absoluteAPIPath, auth.checkAuthentication, apiRouter);
+app.get(`${static.ADMIN_PATH}/logout`,logOut)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function (err, req, res, next) {

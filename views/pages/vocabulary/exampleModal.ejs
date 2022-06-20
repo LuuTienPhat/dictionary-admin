@@ -1,0 +1,258 @@
+<div class="modal fade" id="modal-add-example" tabindex="-1" role="dialog" aria-labelledby="modal-add-example" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="h5 modal-title">Example</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="" method="POST" id="form-example">
+        <div class="modal-body">
+          <div class="row mb-4 d-none">
+            <div class="col-4 d-none">
+              <label for="exampleName">#</label>
+              <input type="text" class="form-control" name="exampleId" id="example-id" value="" />
+              <input type="text" class="form-control" name="meaningId" id="example-meaning-id" value="" />
+            </div>
+            <div class="col-4 d-none">
+              <label for="exampleName">#</label>
+              <input type="text" class="form-control" name="parentPath" value="<%=originalUrl%>" />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12">
+              <label for="example">Example</label>
+              <input name="example" type="text" class="form-control" id="example" />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12">
+              <label for="exampleMeaning">Example Meaning</label>
+              <input type="text" name="exampleMeaning" class="form-control" id="example-meaning" />
+            </div>
+          </div>
+
+          <!-- <div class="row mb-4">
+        <div class="col-6">
+          <label for="quantity">Danh mục</label>
+          <input value="" type="text" class="form-control" id="category" readonly="readonly"/> 
+         </div> 
+         <div class="col-6">
+          <label for="quantity">Số lượng tồn</label>
+          <input type="text" class="form-control" name="oldQuantity" id="oldQuantity" readonly="readonly" /> 
+         </div> 
+        </div>
+        <div class="row mb-4">
+         <div class="col-6">
+          <label for="quantity">${invoice.invoiceType.id == 1 ? 'Số lượng nhập' : 'Số lượng xuất'}</label>
+          <input type="text" class="form-control ${quantityValid }" name="newQuantity" id="newQuantity" placeholder="${invoice.invoiceType.id == 1 ? 'Nhập số lượng nhập' : 'Nhập số lượng xuất'}" /> 
+             <p class="invalid-feedback">${errors.get(product.id)}</p>
+         </div> -->
+
+          <!-- <div class="col-6">
+          <label for="price">Đơn giá</label>
+          <input type="text" class="form-control ${priceValid }" id="price" name="price" placeholder="Nhập đơn giá" />
+             <p class="invalid-feedback">${errors.get(product.id)}</p>
+         </div>
+        </div> -->
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" id="btnConfirm">Submit</button>
+          <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Content -->
+<div class="modal fade" id="modal-warning-example" tabindex="-1" role="dialog" aria-labelledby="modal-warning" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="h5 modal-title">Confirm</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="mb-2">
+          <svg class="text-warning icon icon-xxl" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+
+        <h5 class="my-0 mb-2"><%-modal.content%></h5>
+        <small class="my-0 mt-4 text-wrap text-gray-500">This will <span class="fw-bold">be permanently removed</span> and <span class="fw-bold">can not be recovery</span></small>
+      </div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-danger" id="btnConfirmExample" href="">OK</a>
+        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Modal Content -->
+
+<script type="text/javascript">
+  const formExample = document.getElementById('form-example')
+  const originalUrl2 = "<%-originalUrl%>";
+  let v2 = JSON.parse(`<%-v %>`);
+  var exampleId = null;
+  var myModalExample = new bootstrap.Modal(document.getElementById("modal-add-example"), {
+    keyboard: false,
+  });
+  let meaning = null;
+  var v = JSON.parse(`<%-v %>`);
+  var table = document.getElementById("table-meaning");
+  var rows = table.getElementsByTagName("tr");
+  rows.forEach(item => item.addEventListener('click', async () => {
+    let meaningId = item.dataset.id;
+    // var cell = row.getElementsByTagName("td")[0];
+    // var partOfSpeechId = cell.dataset.id;
+    // console.log(partOfSpeechId);
+    await axios.get(`/admin/api/meanings/${meaningId}`).then(res=>res.data).then(data => meaning = data);
+    //meaning = v.meanings.find((item) => item.id == partOfSpeechId);
+    const tableExample = document.getElementById("table-example");
+    document.getElementById("btn-add-example").classList.remove("d-none");
+
+    let examples = meaning.examples;
+    let result = examples.map((item) => {
+      return `<tr>
+                        <td class="d-none">
+                        <a href="" class="fw-bold">${item.id}</a>
+                        </td>
+                        <td><span class="fw-normal">${item.example}</span></td>
+
+                        <td><span class="fw-normal text-wrap">${item.exampleMeaning}</span></td>
+
+                        <td class="text-center">
+                        <div class="btn-group">
+                            <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg class="icon icon-xxs" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
+
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu py-0">
+                            <a class="dropdown-item rounded-top" href="/${item.id}">
+                                <i class="bi bi-eye-fill dropdown-icon text-gray-400 me-2 icon-sm"></i>
+                                View
+                            </a>
+
+                            <a class="dropdown-item text-warning" id="btn-edit-example" data-id="${item.id}">
+                                <i class="bi bi-pencil-square dropdown-icon me-2"></i>
+                                Edit
+                            </a>
+
+                            <a id="btnDeleteExample" class="dropdown-item text-danger rounded-bottom" data-bs-toggle="modal" data-bs-target="#modal-warning-example" data-id="${item.id}">
+                                <i class="bi bi-trash2-fill dropdown-icon me-2"></i>
+                                Delete
+                            </a>
+                            </div>
+                        </div>
+                        </td>
+                    </tr>`;
+    });
+
+    tableExample.getElementsByTagName("tbody")[0].innerHTML = result.join("");
+
+    const btnEditExamples = document.querySelectorAll("#btn-edit-example");
+        for (const button of btnEditExamples) {
+          button.addEventListener("click", async (e) => {
+            exampleId = JSON.parse(button.dataset.id);
+
+            document.getElementById("example-id").value = exampleId;
+            formExample.action = `/admin/api/examples/edit/${exampleId}`;
+
+            let example = null;
+            await axios
+              .get(`/admin/api/examples/${exampleId}`)
+              .then((res) => res.data)
+              .then((data) => {
+                example = data;
+              })
+              .catch((err) => console.log(err));
+
+            // const selectEl = document.getElementById("partOfSpeech-select");
+            // const options = partOfSpeeches2.map((item) => {
+            //   return `<option value="${item.id}" ${item.id == example.partOfSpeech.id ? "selected" : ""}>${item.name}</option>`;
+            // });
+            // selectEl.innerHTML = options.join("");
+            document.getElementById("example").value = example.example;
+            document.getElementById("example-meaning").value = example.exampleMeaning;
+            document.getElementById("example-meaning-id").value = meaning.id;
+            myModalExample.show();
+          });
+        }
+
+        const btnDeletesExample = document.querySelectorAll("#btnDeleteExample");
+
+
+        btnDeletesExample.forEach((btnDelete) => {
+          btnDelete.addEventListener("click", async () => {
+            let exampleId = btnDelete.dataset.id;
+            const btnConfirm = document.querySelector("#btnConfirmExample");
+            btnConfirm.href = `/admin/api/examples/delete/${v2.id}/${exampleId}`;
+          });
+        });
+        
+  }))
+  for (i = 0; i < rows.length; i++) {
+    var currentRow = table.rows[i];
+    var createClickHandler = async function (row) {
+      return async function () {
+        // var cell = row.getElementsByTagName("td")[0];
+        // var partOfSpeechId = cell.dataset.id;
+        // console.log(partOfSpeechId);
+        // await axios.get(`/admin/api/meanings/${id}`).then(res=>res.data).then(data => meaning = data);
+        // //meaning = v.meanings.find((item) => item.id == partOfSpeechId);
+        // const tableExample = document.getElementById("table-example");
+        // document.getElementById("btn-add-example").classList.remove("d-none");
+
+        // let examples = meaning.examples;
+        // let result = examples.map((item) => {
+        //   return `<tr>
+        //                     <td class="d-none">
+        //                     <a href="" class="fw-bold">${item.id}</a>
+        //                     </td>
+        //                     <td><span class="fw-normal">${item.example}</span></td>
+
+        //                     <td><span class="fw-normal text-wrap">${item.exampleMeaning}</span></td>
+
+        //                     <td class="text-center">
+        //                     <div class="btn-group">
+        //                         <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        //                         <svg class="icon icon-xxs" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
+
+        //                         <span class="visually-hidden">Toggle Dropdown</span>
+        //                         </button>
+        //                         <div class="dropdown-menu py-0">
+        //                         <a class="dropdown-item rounded-top" href="/${item.id}">
+        //                             <i class="bi bi-eye-fill dropdown-icon text-gray-400 me-2 icon-sm"></i>
+        //                             View
+        //                         </a>
+
+        //                         <a class="dropdown-item text-warning" id="btn-edit-example" data-id="${item.id}">
+        //                             <i class="bi bi-pencil-square dropdown-icon me-2"></i>
+        //                             Edit
+        //                         </a>
+
+        //                         <a id="btnDeleteExample" class="dropdown-item text-danger rounded-bottom" data-bs-toggle="modal" data-bs-target="#modal-warning-example" data-id="${item.id}">
+        //                             <i class="bi bi-trash2-fill dropdown-icon me-2"></i>
+        //                             Delete
+        //                         </a>
+        //                         </div>
+        //                     </div>
+        //                     </td>
+        //                 </tr>`;
+        // });
+
+        // tableExample.getElementsByTagName("tbody")[0].innerHTML = result.join("");
+      };
+    };
+    currentRow.onclick = createClickHandler(currentRow);
+  }
+
+  const btnAddExample = document.querySelector("#btn-add-example");
+  btnAddExample.addEventListener("click", () => {
+    formExample.action = `/admin/api/examples`;
+    formExample.reset();
+    document.getElementById("example-meaning-id").value = meaning.id;
+    myModalExample.show();
+  });
+</script>

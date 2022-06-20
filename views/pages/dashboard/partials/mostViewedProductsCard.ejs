@@ -1,0 +1,45 @@
+<div class="card border-0 shadow box">
+    <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+        <div class=" h2 fs-5 fw-bold mb-0 text-info d-flex align-items-center">
+        <svg class="icon me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+        	<span>Most viewed Product</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="list-group list-group-flush list my--3">
+        	<% mostViewedProducts.forEach(function(item, index) { %>
+            	<a class="list-group-item list-group-item-action px-2 <%=index != mostViewedProducts.length - 1 ? 'border-bottom' : '' %>" aria-current="true" href="<%pagesPath.vocabularyPagePath%>/<%item.id%>">
+    			<div class="row align-items-center justify-content-between">
+                <div class="col-auto">
+                	<h3 class="my-0 <%=(index+1) == 1 ? 'text-danger' : (index+1) == 2 ? 'text-secondary' : (index+1) == 3 ? 'text-tertiary' : 'text-gray-400' %>">
+                        <%= index + 1 %>
+                    </h3>
+                    </div>
+                    <!-- <div class="col-auto">
+                       <img class="rounded" width="50" height="50" alt="Image placeholder" src="${product.images.get(0).image}" />
+                    </div> -->
+                    <div class="col-5 text-truncate ">
+                        <h4 class="h6 mb-0 text-truncate">
+                            <%= item.name %>
+                        </h4>
+                    </div>
+                    <div class="col-auto">
+                        
+                        <div class="d-flex align-items-center">
+                            <!-- <div class="bg-success dot rounded-circle me-1"></div> -->
+                            <svg class="icon icon-xxs text-info me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            <small><%= item.views %></small>
+                        </div>
+                    </div>
+                </div>
+  				</a>
+            <% });%>
+           </div>
+    </div>
+    <div class="card-footer border-top bg-gray-50">
+    	<a class="fw-bold d-flex align-items-center justify-content-center" href="${applicationScope.dashboardPage}/${applicationScope.mostViewedProductsPage}">
+    		<svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+    		See all
+    	</a>
+    </div>
+</div>

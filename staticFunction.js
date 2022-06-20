@@ -46,28 +46,19 @@ exports.verifyToken = (token, secretKey) => {
   });
 };
 
-exports.renderRole = (req) => {
+exports.getAccessToken = (req) => {
   const { accessToken } = req.cookies;
+  return accessToken;
+};
 
-  const roles = this.decodeJWT(accessToken).roles;
-
-  let menu = [];
-
-  if (roles.includes("ROLE_ADMIN_WORD")) {
-    menu.push("vocabulary");
-    menu.push("part of speech");
-  }
-  if (roles.includes("ROLE_ADMIN_SALE")) {
-    menu.push("category");
-    menu.push("product");
-    menu.push("order");
-  }
-  if (roles.includes("ROLE_MANGER")) {
-    menu.push("role");
-    menu.push("user");
-  }
-
-  return menu;
+exports.axiosOptions = (req) => {
+  const { accessToken } = req.cookies;
+  
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
 };
 
 
